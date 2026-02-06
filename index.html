@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Our Lost & Found</title>
+  <style>
+    @font-face {
+  font-family: 'Boucherie Flared';
+  src: url('BoucherieFlared.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+    body {
+      font-family: 'Boucherie Flared', system-ui, sans-serif;
+      background: #f6f7fb;
+      margin: 0;
+      padding: 40px;
+      color: #333;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 8px;
+      font-size: 50px;
+    }
+
+    p.subtitle {
+      text-align: center;
+      color: #777;
+      margin-bottom: 40px;
+      font-size: 25px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 24px;
+      max-width: 700px;
+      margin: auto;
+    }
+
+    .item {
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      text-align: center;
+      cursor: pointer;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.06);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .item:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 14px 28px rgba(0,0,0,0.08);
+    }
+
+    .item svg {
+      width: 40px;
+      height: 40px;
+      margin-bottom: 12px;
+      stroke: #555;
+    }
+
+    .item span {
+  font-size: 14px;
+  color: #555;
+  display: block;
+  text-align: center;
+  margin-top: 4px;
+}
+
+    /* Modal */
+    .modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4); /* default */
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+
+    .modal.active {
+      display: flex;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 20px;
+      padding: 28px;
+      max-width: 400px;
+      width: 90%;
+      position: relative;
+      animation: pop 0.2s ease;
+    }
+
+    @keyframes pop {
+      from { transform: scale(0.95); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .close {
+      position: absolute;
+      top: 14px;
+      right: 18px;
+      cursor: pointer;
+      font-size: 18px;
+      color: #999;
+    }
+
+    .modal h2 {
+      margin-top: 0;
+    }
+
+    .modal p {
+      color: #555;
+      line-height: 1.6;
+    }
+    .playlist-btn {
+  display: inline-block;
+  margin-top: 16px;
+  padding: 10px 16px;
+  background: #6b6bff;
+  color: white;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: 600;
+  text-align: center;
+}
+
+.playlist-btn:hover {
+  opacity: 0.9;
+}
+
+  </style>
+</head>
+<body>
+
+  <h1>Our Lost & Found</h1>
+  <p class="subtitle">our little window full of memories</p>
+
+  <div class="grid">
+    <div class="item" onclick="openModal(0, this)">
+      <!-- Heart -->
+      <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5">
+        <path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733C11.285 4.876 9.623 3.75 7.688 3.75 5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"/>
+      </svg>
+      <span>how it's started</span>
+    </div>
+
+    <div class="item" onclick="openModal(1, this)">
+  <!-- Music Note -->
+  <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5">
+    <path d="M9 18.75a2.25 2.25 0 1 0 0-4.5 2.25 2.25 0 0 0 0 4.5Z" />
+    <path d="M9 14.25V5.25l10.5-1.5v9" />
+    <path d="M19.5 15.75a2.25 2.25 0 1 0 0-4.5 2.25 2.25 0 0 0 0 4.5Z" />
+  </svg>
+
+  <span>our playlist</span>
+</div>
+
+
+    <div class="item" onclick="openModal(2, this)">
+  <!-- Camera -->
+  <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5">
+    <path
+      d="M6.75 7.5h1.386c.51 0 .99-.195 1.35-.547l.964-.906A2.25 2.25 0 0 1 11.98 5.25h.04a2.25 2.25 0 0 1 1.53.797l.964.906c.36.352.84.547 1.35.547H17.25A2.25 2.25 0 0 1 19.5 9.75v6A2.25 2.25 0 0 1 17.25 18h-10.5A2.25 2.25 0 0 1 4.5 15.75v-6A2.25 2.25 0 0 1 6.75 7.5Z"
+    />
+    <circle cx="12" cy="12" r="3.75" />
+  </svg>
+
+  <span>that one memory of us that stuck w me</span>
+</div>
+
+
+    <div class="item" onclick="openModal(3, this)">
+      <!-- Map -->
+      <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5">
+        <path d="M9 6.75V15m6-6v8.25m-12 3.75 6-3 6 3 6-3V3l-6 3-6-3-6 3v15Z"/>
+      </svg>
+      <span>things we do</span>
+    </div>
+
+    <div class="item" onclick="openModal(4, this)">
+  <!-- Letter / Envelope (fixed) -->
+  <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5">
+    <rect
+      x="2.25"
+      y="6"
+      width="19.5"
+      height="12"
+      rx="2.25"
+    />
+    <path d="M2.25 6 12 13.5 21.75 6" />
+  </svg>
+
+  <span>to you, from this child of man</span>
+</div>
+
+<div class="grid">
+  <!-- items kamu -->
+</div>
+
+<!-- Thumbnail kecil muncul di samping modal (hidden until clicked) -->
+<div id="thumbnail-container" style="
+  position: fixed;
+  display: none; /* hidden until a box is clicked */
+">
+  <img id="thumbnail-img" src="" alt="thumbnail" style="width:120px; border-radius:8px; box-shadow: 0 6px 18px rgba(0,0,0,0.12);">
+</div>
+
+<!-- Modal -->
+<div class="modal" id="modal">
+  <div class="modal-content">
+    <div class="close" onclick="closeModal()">✕</div>
+    <h2 id="modalTitle"></h2>
+    <p id="modalText"></p>
+  </div>
+</div>
+
+ <script>
+const memories = [
+  {
+    title: "big thanks to THE Hat Guy,",
+    text: "bcs he is the one who makes our friendship happened",
+    overlayImage: "images/namecardnya_scara.jpg",
+    thumbnail: "riddle_arigatou.jpg"  // ✅ tambahkan ini
+  },
+
+  {
+    title: "hope this playlist makes you remember of us",
+    html: `
+      <p>senpai is just pursuing higher education ahh moment</p>
+      <a
+        href="https://youtube.com/playlist?list=PLyFMTqMB5cFzRIbebNbIgeHuO4fEgo4Nu"
+        target="_blank"
+        class="playlist-btn"
+      >
+        🎧 mari kita goyang
+      </a>
+    `,
+    overlayColor: "rgba(165, 171, 214, 0.6)"
+  },
+  {
+  title: "our very first photobooth!",
+  html: `
+    <p>this is just sooooooo freaking AWKWARD but cute tho :9</p>
+    <a
+      href="https://drive.google.com/file/d/11_XDhADOHXAqz9hcR7nRAb3QBm37MQ9b/view?usp=drivesdk"
+      target="_blank"
+      class="playlist-btn"
+    >
+      📸 bukti foto dengan seleb *wink*
+    </a>
+  `,
+  overlayColor: "rgba(255, 200, 220, 0.6)",
+  thumbnail: "riddle_arigatou.jpg"  // <-- path ke gambar kecil
+},
+
+
+  {
+    title: "basically us and foods",
+    html: `
+    <p> 
+      or more like ryocho through my phone's cam,
+    </p>
+
+    <a
+    href="https://drive.google.com/drive/folders/1VlUjBBBImCA0i1aaOdzEmxXfp33Up6NU"
+      target="_blank"
+      class="playlist-btn"
+    >
+      🍽️ kasih paham bos
+    </a>
+  `,
+  overlayColor: "rgba(200, 240, 220, 0.6)"
+  },
+  {
+  title: "with love (and cringe(s))",
+  html: `
+    <p>
+     "tiba-tiba malu *membawa palu*",
+    </p>
+
+    <a
+     href="https://docs.google.com/document/d/1PIJO-wRvZ7k6MSdNUeOr7lcmuKVDPIO061l8dLZrz6I/edit?usp=sharing"
+     target="_blank"
+     class="playlist-btn"
+    >
+      💌 pencet aku *freaky backsound*
+    </a>
+  `,
+  overlayColor: "rgba(200, 220, 255, 0.6)",
+
+}
+];
+
+
+function openModal(index, el) {
+  const modal = document.getElementById("modal");
+
+  document.getElementById("modalTitle").innerText =
+    memories[index].title;
+
+  document.getElementById("modalText").innerHTML =
+    memories[index].html || memories[index].text;
+
+  // 🖼️ PRIORITAS FOTO DULU
+  if (memories[index].overlayImage) {
+    modal.style.background = `
+      linear-gradient(
+        rgba(0,0,0,0.4),
+        rgba(0,0,0,0.4)
+      ),
+      url(${memories[index].overlayImage})
+    `;
+    modal.style.backgroundSize = "cover";
+    modal.style.backgroundPosition = "center";
+  }
+  // 🎨 KALAU GA ADA FOTO, PAKAI WARNA
+  else if (memories[index].overlayColor) {
+    modal.style.background = memories[index].overlayColor;
+  }
+  // DEFAULT
+
+   else {
+    modal.style.background = "rgba(0,0,0,0.4)";
+}
+  modal.classList.add("active");
+  // tampilkan thumbnail under the clicked box (and keep it visible after modal close)
+  const thumbnail = document.getElementById("thumbnail-container");
+  const thumbnailImg = document.getElementById("thumbnail-img");
+
+  if (memories[index].thumbnail && el) {
+    // position the thumbnail under the clicked element
+    const rect = el.getBoundingClientRect();
+    const thumbWidth = 120; // px, matches the img width style
+    const left = Math.max(8, rect.left + rect.width / 2 - thumbWidth / 2);
+    const top = rect.bottom + 8; // 8px gap below the box
+    thumbnail.style.left = `${left}px`;
+    thumbnail.style.top = `${top}px`;
+    thumbnail.style.position = "fixed";
+
+    // show container only once the image successfully loads
+    thumbnailImg.onload = function () {
+      thumbnail.style.display = "block";
+    };
+    thumbnailImg.onerror = function () {
+      // hide container if image failed to load
+      thumbnail.style.display = "none";
+      thumbnailImg.src = "";
+    };
+    // start loading the image
+    thumbnailImg.src = memories[index].thumbnail;
+  } else {
+    // clear handlers and hide when there's no thumbnail
+    thumbnailImg.onload = null;
+    thumbnailImg.onerror = null;
+    thumbnail.style.display = "none";
+    thumbnailImg.src = "";
+  }
+
+}
+
+
+function closeModal() {
+  const modal = document.getElementById("modal");
+  modal.classList.remove("active");
+  modal.style.background = "rgba(0,0,0,0.4)";
+  // thumbnail is intentionally left visible under the clicked box
+
+}
+</script>
+
+
+</body>
+</html>
